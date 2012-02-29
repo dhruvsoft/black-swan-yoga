@@ -1,0 +1,1 @@
+# This is a rails sample application using twitter bootstrap
