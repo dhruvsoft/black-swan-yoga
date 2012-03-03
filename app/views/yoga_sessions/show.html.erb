@@ -1,0 +1,32 @@
+<h1>Yoga Session</h1>
+
+<p>
+  <b>Day</b><br>
+  <%= @yoga_session.day %>
+</p>
+
+<p>
+  <b>Name</b><br>
+  <%= @yoga_session.name %>
+</p>
+
+<p>
+  <b>Instructor</b><br>
+  <%= @yoga_session.instructor_id %>
+</p>
+
+<p>
+  <b>Start time</b><br>
+  <%= @yoga_session.start_time %>
+</p>
+
+<p>
+  <b>End time</b><br>
+  <%= @yoga_session.end_time %>
+</p>
+
+<div class="form-actions">
+  <%= link_to 'Back', yoga_sessions_path, :class => 'btn'  %>
+  <%= link_to 'Edit', edit_yoga_session_path(@yoga_session), :class => 'btn' %>
+  <%= link_to 'Delete', yoga_session_path(@yoga_session), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-danger' %>
+</div>
