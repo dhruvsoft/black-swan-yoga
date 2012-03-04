@@ -1,5 +1,7 @@
 Store::Application.routes.draw do
   root :to => 'yoga_sessions#index'
+  
+  match "schedule/:day" => "yoga_sessions#day"
   resources :yoga_sessions
 
   resources :products
