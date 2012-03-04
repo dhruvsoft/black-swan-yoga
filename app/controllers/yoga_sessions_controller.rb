@@ -11,7 +11,7 @@ class YogaSessionsController < ApplicationController
     else
       @today = "Today"
       @yoga_sessions = YogaSession.where(day: Time.now.strftime("%A")).order(:start_time)
-      @yoga_sessions.select! {|s| Time.now.strftime("%H") <= s.start_time.strftime("%H") } 
+      @yoga_sessions.select! {|s| Time.now.strftime("%H").to_i <= s.start_time.strftime("%H").to_i } 
     end 
     
     respond_to do |format|
