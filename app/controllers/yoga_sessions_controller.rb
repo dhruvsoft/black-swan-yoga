@@ -9,8 +9,9 @@ class YogaSessionsController < ApplicationController
       @today = params[:day].capitalize
       @yoga_sessions = YogaSession.where(day: params[:day].capitalize).order(:start_time)
     else
-      @today = Time.now.strftime("%A")
-      @yoga_sessions = YogaSession.where(day: Time.now.strftime("%A")).order(:start_time)  
+      @today = "Today"
+      @yoga_sessions = YogaSession.where(day: Time.now.strftime("%A")).order(:start_time)
+      @yoga_sessions.select! {|s| Time.now.strftime("%H") <= s.start_time.strftime("%H") } 
     end 
     
     respond_to do |format|
