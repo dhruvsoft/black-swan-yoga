@@ -2,13 +2,15 @@ class YogaSessionsController < ApplicationController
   # GET /yoga_sessions
   # GET /yoga_sessions.json
   def index
-    @today = Time.now.strftime("%A")
     if params[:all]
-      @yoga_sessions = YogaSession.all
+      @today = Time.now.strftime("%A")
+      @yoga_sessions = YogaSession.all.order(:start_time)
     elsif params[:day]
-      @yoga_sessions = YogaSession.where(day: params[:day])
+      @today = params[:day].capitalize
+      @yoga_sessions = YogaSession.where(day: params[:day].capitalize).order(:start_time)
     else
-      @yoga_sessions = YogaSession.where(day: Time.now.strftime("%A"))    
+      @today = Time.now.strftime("%A")
+      @yoga_sessions = YogaSession.where(day: Time.now.strftime("%A")).order(:start_time)  
     end 
     
     respond_to do |format|
@@ -17,15 +19,14 @@ class YogaSessionsController < ApplicationController
     end
   end
   
-  # GET /yoga_sessions/monday
-  # GET /yoga_sessions/monday.json
+  # GET /schedule/monday
+  # GET /schedule/monday.json
   def day
-    @today = params[:day].capitalize
-    @yoga_sessions = YogaSession.where(day: @today)
+    @yoga_sessions = YogaSession.where(day: params[:day].capitalize)
     
     respond_to do |format|
-      format.html render :show
-      format.json { render json: @yoga_session }
+      format.html render :index
+      format.json { render json: @yoga_sessions }
     end
   end 
 
@@ -60,8 +61,6 @@ class YogaSessionsController < ApplicationController
   # POST /yoga_sessions.json
   def create
     @yoga_session = YogaSession.new(params[:yoga_session])
-    @yoga_session.start_time = Chronic.parse params[:yoga_session][:start_time]
-    @yoga_session.end_time = Chronic.parse params[:yoga_session][:end_time]
 
     respond_to do |format|
       if @yoga_session.save

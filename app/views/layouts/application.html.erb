@@ -23,8 +23,8 @@
         <a class="brand" href="#">Black Swan Central</a>
         <div class="nav-collapse">
           <ul class="nav">
-            <% %w(Monday Tuesday Wednesday Thurday Friday Saturday Sunday).each do |day| %>
-              <li><%= link_to day, "/schedule/#{day.downcase}" %></li>
+            <% %w(Monday Tuesday Wednesday Thursday Friday Saturday Sunday).each do |day| %>
+              <li><%= link_to day, "/?day=#{day.downcase}" %></li>
             <% end %>
           </ul>
         </div>
