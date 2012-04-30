@@ -1,45 +1,35 @@
 class YogaSessionsController < ApplicationController
+  responds_to :html, :json 
   # GET /yoga_sessions
   # GET /yoga_sessions.json
+
   def index
     if params[:all]
       @today = Time.now.strftime("%A")
-      @yoga_sessions = YogaSession.all.order(:start_time)
+      @yoga_sessions = YogaSession.all
     elsif params[:day]
       @today = params[:day].capitalize
-      @yoga_sessions = YogaSession.where(day: params[:day].capitalize).order(:start_time)
+      @yoga_sessions = YogaSession.on_day params[:day]
     else
       @today = "Today"
-      @yoga_sessions = YogaSession.where(day: Time.now.strftime("%A")).order(:start_time)
-      @yoga_sessions.select! {|s| Time.now.strftime("%H").to_i <= s.start_time.strftime("%H").to_i } 
+      @yoga_sessions = YogaSession.today.remaining
     end 
-    
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @yoga_sessions }
-    end
+    respond_with @yoga_sessions
   end
   
   # GET /schedule/monday
   # GET /schedule/monday.json
   def day
-    @yoga_sessions = YogaSession.where(day: params[:day].capitalize)
-    
-    respond_to do |format|
-      format.html render :index
-      format.json { render json: @yoga_sessions }
-    end
+    @yoga_sessions = YogaSession.on_day params[:day]
+    respond_with @yoga_sessions
   end 
 
   # GET /yoga_sessions/1
   # GET /yoga_sessions/1.json
   def show
     @yoga_session = YogaSession.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @yoga_session }
-    end
+    respond_with @yoga_session 
+  end
   end
 
   # GET /yoga_sessions/new
